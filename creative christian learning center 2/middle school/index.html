@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>6–8 Leadership Program | Creative Christian Learning Center</title>
+  <link rel="stylesheet" href="/style.css" />
+  <script src="/script.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand">
+      <span class="brand-icon">🎨✝️</span>
+      <span class="brand-name">Creative Christian Learning Center</span>
+    </div>
+    <nav class="site-nav">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/enroll/">K-5 Enrollment</a></li>
+        <li><a href="/scholarship/">Scholarships</a></li>
+        <li><a href="/middle/">6-8 Leadership Program</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="page-narrow">
+    <section class="section-header-wrap">
+      <div class="section-header">
+        <h1>Leadership development & investing strategies</h1>
+        <div class="section-accent"></div>
+      </div>
+      <p>Open enrollment for grades 6–8. This self-study program equips students with practical leadership skills and foundational investing knowledge.</p>
+    </section>
+
+    <section class="form-section">
+      <h2>Enroll in 6–8 program</h2>
+      <form name="middle-enroll" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="form-card">
+        <input type="hidden" name="form-name" value="middle-enroll" />
+        <p class="hidden">
+          <label>Don’t fill this out if you're human: <input name="bot-field" /></label>
+        </p>
+
+        <label>
+          <span>Parent name</span>
+          <input type="text" name="parentName" required />
+        </label>
+
+        <label>
+          <span>Email</span>
+          <input type="email" name="email" required />
+        </label>
+
+        <label>
+          <span>Phone number</span>
+          <input type="tel" name="phone" required />
+        </label>
+
+        <label>
+          <span>Child age</span>
+          <input type="number" name="childAge" min="10" max="15" required />
+        </label>
+
+        <button type="submit" class="button button-accent">Enroll</button>
+      </form>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; 2025 Creative Christian Learning Center</p>
+  </footer>
+</body>
+</html>
