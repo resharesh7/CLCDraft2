@@ -576,38 +576,5 @@
     attachForm('form-waitlist', 'Waitlist joined!');
     attachForm('form-middle', 'Middle School enrollment submitted!');
   </script>
-
-  <!-- Pencil Button -->
-  <button id="pencilBtn">✏️</button>
-
-  <!-- Popup -->
-  <div id="popup" class="popup">
-    <div class="popup-content">
-      <h2>Welcome to Creative Christian Learning Center!</h2>
-      <p>We’re excited to partner with parents and students. Enroll today!</p>
-      <button class="close-btn" id="closePopup">Close</button>
-    </div>
-  </div>
-
-  <script>
-    const pencilBtn = document.getElementById("pencilBtn");
-    const popup = document.getElementById("popup");
-    const closeBtn = document.getElementById("closePopup");
-
-    pencilBtn.addEventListener("click", () => {
-      popup.style.display = "flex";
-    });
-
-    closeBtn.addEventListener("click", () => {
-      popup.style.display = "none";
-    });
-
-    // Close when clicking outside popup
-    window.addEventListener("click", (e) => {
-      if (e.target === popup) {
-        popup.style.display = "none";
-      }
-    });
-  </script>
 </body>
 </html>
