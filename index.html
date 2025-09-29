@@ -1,204 +1,581 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Creative Christian Learning Center</title>
+  <meta name="description" content="Creative Christian Learning Center — playful, professional K–5 and Middle School learning with scholarships and open enrollment." />
   <style>
+    /* Color System (toggled by the pencil) */
+    :root {
+      --bg: #ffffff;
+      --fg: #1f2a44;
+      --muted: #5e6a85;
+      --card: #f7f9fc;
+      --primary: #2563eb; /* blue */
+      --accent1: #ff6b6b; /* coral red */
+      --accent2: #ffd166; /* sunflower */
+      --accent3: #06d6a0; /* mint */
+      --accent4: #8338ec; /* purple */
+      --shadow: rgba(31, 42, 68, 0.12);
+    }
+    .theme-playful {
+      --bg: #ffffff;
+      --fg: #1f2a44;
+      --muted: #4b5563;
+      --card: #ffffff;
+      --primary: #2563eb;
+      --accent1: #ff6b6b;
+      --accent2: #ffd166;
+      --accent3: #06d6a0;
+      --accent4: #8338ec;
+      --shadow: rgba(31, 42, 68, 0.18);
+    }
+    .theme-minimal {
+      --bg: #ffffff;
+      --fg: #0f172a;
+      --muted: #64748b;
+      --card: #f8fafc;
+      --primary: #111827;
+      --accent1: #111827;
+      --accent2: #111827;
+      --accent3: #111827;
+      --accent4: #111827;
+      --shadow: rgba(0, 0, 0, 0.08);
+    }
+
+    /* Base */
+    html, body { height: 100%; }
     body {
-      font-family: Arial, sans-serif;
       margin: 0;
-      padding: 0;
-      background: #f9f9f9;
-      color: #333;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color: var(--fg);
+      background: radial-gradient(1200px 700px at 10% -10%, rgba(37,99,235,0.08), transparent 50%),
+                  radial-gradient(1000px 600px at 90% -20%, rgba(255,209,102,0.12), transparent 55%),
+                  var(--bg);
+      line-height: 1.6;
+    }
+    a { color: var(--primary); text-decoration: none; }
+    img { max-width: 100%; height: auto; }
+    .container { width: min(1100px, 92vw); margin: 0 auto; }
+
+    /* Nav */
+    .nav {
+      position: sticky; top: 0; z-index: 1000;
+      backdrop-filter: saturate(180%) blur(12px);
+      background: color-mix(in oklab, var(--bg) 85%, transparent);
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.75rem 0;
+    }
+    .brand {
+      display: flex; align-items: center; gap: 0.6rem; font-weight: 700; letter-spacing: 0.2px;
+    }
+    .brand-mark {
+      width: 36px; height: 36px; border-radius: 8px; background: linear-gradient(135deg, var(--accent3), var(--accent4));
+      box-shadow: 0 8px 20px var(--shadow);
+      display: grid; place-items: center;
+      animation: float 5s ease-in-out infinite;
+    }
+    .brand-mark svg { width: 22px; height: 22px; color: white; }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+
+    .links { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .links a {
+      padding: 0.5rem 0.75rem; border-radius: 8px; font-weight: 600; color: var(--fg);
+      transition: transform 180ms ease, background 180ms ease;
+    }
+    .links a:hover { background: var(--card); transform: translateY(-1px); }
+
+    /* Pencil Toggle (Theme switch) */
+    .toggle {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.4rem 0.6rem; border-radius: 10px; background: var(--card); cursor: pointer;
+      box-shadow: 0 6px 18px var(--shadow);
+      user-select: none;
+    }
+    .toggle svg { width: 22px; height: 22px; }
+    .toggle .tip { width: 6px; height: 6px; border-radius: 50%; background: var(--accent1); box-shadow: 0 0 0 6px color-mix(in oklab, var(--accent1) 20%, transparent); }
+    .toggle .label { font-weight: 700; font-size: 0.9rem; color: var(--muted); }
+
+    /* Hero */
+    .hero { padding: 3.5rem 0 2rem; }
+    .hero-grid {
+      display: grid; gap: 2rem; grid-template-columns: 1.2fr 1fr; align-items: center;
+    }
+    .eyebrow { font-weight: 800; color: var(--accent4); letter-spacing: 0.4px; }
+    .hero h1 { font-size: clamp(2rem, 3.6vw, 3rem); margin: 0.5rem 0; }
+    .hero p { color: var(--muted); max-width: 60ch; }
+    .cta-row { display: flex; gap: 0.9rem; margin-top: 1.2rem; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.75rem 1rem; border-radius: 12px; font-weight: 700;
+      border: 1px solid #e5e7eb; background: var(--bg); color: var(--fg);
+      transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+    }
+    .btn-primary { background: var(--primary); color: white; border-color: color-mix(in oklab, var(--primary) 60%, #e5e7eb); }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 12px 24px var(--shadow); }
+
+    /* Icons strip */
+    .icons {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 1.5rem;
+    }
+    .icon-card {
+      background: var(--card); border-radius: 16px; padding: 1rem; display: flex; align-items: center; gap: 0.9rem;
+      box-shadow: 0 10px 22px var(--shadow); border: 1px solid #e5e7eb;
+      transition: transform 200ms ease;
+    }
+    .icon-card:hover { transform: translateY(-3px) rotate(-0.2deg); }
+    .icon-card svg { width: 28px; height: 28px; }
+    .icon-card .label { font-weight: 700; color: var(--muted); }
+
+    /* Section switcher using :target (single-page, deep-linkable) */
+    section.page { display: none; }
+    section.page:target { display: block; }
+    #home:target ~ #home, body:not(:has(section.page:target)) #home { display: block; }
+    /* Fallback for browsers without :has() support – show home by default */
+    @supports not (selector(:has(*))) {
+      section.page { display: none; }
+      #home { display: block; }
     }
 
-    header {
-      background: #4a90e2;
-      color: #fff;
-      padding: 20px;
-      text-align: center;
+    /* Shared section styles */
+    .section {
+      padding: 3rem 0;
+    }
+    .section h2 {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      margin-bottom: 0.75rem;
+    }
+    .lead { color: var(--muted); max-width: 65ch; }
+    .cards {
+      display: grid; gap: 1.2rem; grid-template-columns: repeat(3, 1fr);
+    }
+    .card {
+      background: var(--card); border: 1px solid #e5e7eb; border-radius: 16px; padding: 1rem;
+      box-shadow: 0 10px 22px var(--shadow);
     }
 
-    header h1 {
-      margin: 0;
-      font-size: 2.2rem;
+    /* Forms */
+    .form-grid { display: grid; gap: 0.9rem; grid-template-columns: repeat(2, 1fr); }
+    .form-grid .full { grid-column: 1 / -1; }
+    label { font-weight: 700; font-size: 0.85rem; color: var(--muted); }
+    input, select, textarea {
+      width: 100%; padding: 0.7rem 0.8rem; border-radius: 10px; border: 1px solid #e5e7eb;
+      background: #fff; color: var(--fg);
+      transition: box-shadow 160ms ease, border-color 160ms ease;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px color-mix(in oklab, var(--primary) 20%, transparent);
     }
 
-    header p {
-      margin: 5px 0 0;
-      font-size: 1rem;
+    /* Scholarships panel */
+    .scholar-cta {
+      display: grid; gap: 1rem; grid-template-columns: 1fr 1fr; align-items: center;
+      background: linear-gradient(120deg, color-mix(in oklab, var(--accent2) 30%, #fff), color-mix(in oklab, var(--accent3) 30%, #fff));
+      border: 1px solid #e5e7eb; border-radius: 16px; padding: 1rem;
     }
 
-    .container {
-      padding: 20px;
-      max-width: 900px;
-      margin: auto;
+    /* Middle School highlight */
+    .badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-weight: 800; color: var(--accent4); background: color-mix(in oklab, var(--accent4) 12%, #fff);
+      border: 1px solid color-mix(in oklab, var(--accent4) 20%, #e5e7eb);
+      border-radius: 999px; padding: 0.4rem 0.7rem;
     }
 
-    .features {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 20px;
-      margin: 30px 0;
-      text-align: center;
+    /* Footer */
+    footer {
+      padding: 2rem 0; color: var(--muted);
     }
 
-    .feature {
-      background: #fff;
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
+    /* Animations */
+    .reveal { opacity: 0; transform: translateY(14px); transition: opacity 600ms ease, transform 600ms ease; }
+    .reveal.show { opacity: 1; transform: translateY(0); }
 
-    .feature img {
-      width: 50px;
-      margin-bottom: 10px;
-    }
-
-    .enroll-box {
-      background: #fff;
-      padding: 25px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      margin-top: 30px;
-    }
-
-    .enroll-box h2 {
-      margin-top: 0;
-      color: #4a90e2;
-    }
-
-    .enroll-box form {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .enroll-box input {
-      padding: 10px;
-      margin: 8px 0;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-
-    .enroll-box button {
-      background: #4a90e2;
-      color: #fff;
-      padding: 10px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .enroll-box button:hover {
-      background: #357abd;
-    }
-
-    /* Pencil button */
-    #pencilBtn {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background-color: #ffcc00;
-      border: none;
-      border-radius: 50%;
-      padding: 15px;
-      font-size: 1.2rem;
-      cursor: pointer;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-      transition: transform 0.2s, background-color 0.2s;
-    }
-
-    #pencilBtn:hover {
-      transform: scale(1.1);
-      background-color: #ff9900;
-    }
-
-    /* Popup overlay */
-    .popup {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.5);
-      justify-content: center;
-      align-items: center;
-    }
-
-    /* Popup box */
-    .popup-content {
-      background: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      max-width: 400px;
-      width: 80%;
-      text-align: center;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    }
-
-    .popup-content h2 {
-      margin-top: 0;
-      color: #4a90e2;
-    }
-
-    .close-btn {
-      margin-top: 15px;
-      padding: 8px 15px;
-      background: #ff4444;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .close-btn:hover {
-      background: #cc0000;
+    /* Responsive */
+    @media (max-width: 960px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .icons { grid-template-columns: repeat(2, 1fr); }
+      .cards { grid-template-columns: 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
+      .scholar-cta { grid-template-columns: 1fr; }
     }
   </style>
 </head>
-<body>
-
-  <!-- Header -->
-  <header>
-    <h1>Creative Christian Learning Center</h1>
-    <p>Professional, playful and inviting theme with pops of color!</p>
-  </header>
-
-  <!-- Main Content -->
-  <div class="container">
-    <!-- Features -->
-    <div class="features">
-      <div class="feature">
-        <img src="https://img.icons8.com/color/96/000000/book.png" alt="Books">
-        <p>Engaging Learning</p>
+<body class="theme-playful">
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="container nav-inner">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <!-- Book logo -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 4h14a4 4 0 0 1 4 4v12H7a4 4 0 0 1-4-4V4z" />
+            <path d="M7 4v12" />
+          </svg>
+        </div>
+        <span>Creative Christian Learning Center</span>
       </div>
-      <div class="feature">
-        <img src="https://img.icons8.com/color/96/000000/apple.png" alt="Apple">
-        <p>Healthy Environment</p>
+      <div class="links" role="navigation" aria-label="Primary">
+        <a href="#home">Home</a>
+        <a href="#enroll">Enroll</a>
+        <a href="#scholarships">Scholarships</a>
+        <a href="#middle">Middle School</a>
+        <a href="#about">About</a>
       </div>
-      <div class="feature">
-        <img src="https://img.icons8.com/color/96/000000/ruler.png" alt="Ruler">
-        <p>Fun Activities</p>
+      <!-- Pencil theme toggle -->
+      <div class="toggle" id="pencilToggle" role="button" tabindex="0" aria-pressed="true" aria-label="Toggle playful colors">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M3 21l3-3h3l9-9a3 3 0 1 0-4.243-4.243l-9 9v3z" stroke-width="2"/>
+          <circle cx="19.5" cy="4.5" r="1.5" fill="currentColor"/>
+        </svg>
+        <span class="label">Color pops</span>
+        <span class="tip" aria-hidden="true"></span>
       </div>
     </div>
+  </nav>
 
-    <!-- Enrollment Form -->
-    <div class="enroll-box">
-      <h2>Enroll Now</h2>
-      <form>
-        <input type="text" placeholder="Parent Name" required>
-        <input type="email" placeholder="Email Address" required>
-        <input type="tel" placeholder="Phone Number" required>
-        <input type="number" placeholder="Child's Age" required>
-        <input type="text" placeholder="Child's Grade" required>
-        <button type="submit">Submit</button>
-      </form>
+  <!-- Home -->
+  <section id="home" class="page">
+    <header class="hero container reveal">
+      <div class="hero-grid">
+        <div>
+          <div class="eyebrow">Faith • Curiosity • Excellence</div>
+          <h1>Playful learning with a professional touch</h1>
+          <p>We serve families with a warm, inviting environment, joyful academics, and character-building experiences. Explore K–5 enrollment, scholarships, and a self-paced Middle School program in leadership and investing.</p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="#enroll">Start Enrollment</a>
+            <a class="btn" href="#scholarships">Find Scholarships</a>
+            <a class="btn" href="#middle">Middle School Program</a>
+          </div>
+
+          <div class="icons">
+            <!-- Ruler -->
+            <div class="icon-card reveal">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <rect x="3" y="6" width="18" height="4" rx="2" />
+                <path d="M6 10v4m3-4v2m3-2v4m3-4v2m3-2v4" />
+              </svg>
+              <div class="label">Measure & grow</div>
+            </div>
+            <!-- Apple -->
+            <div class="icon-card reveal">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M16.5 8.5c-2 0-3.5-1.5-3.5-3.5 0-1.5.7-2.7 1.7-3.4M7.5 8.5c2 0 3.5-1.5 3.5-3.5 0-1.5-.7-2.7-1.7-3.4" />
+                <path d="M12 7c-5.5 0-7 4.5-7 7 0 3.5 2.5 6 7 6s7-2.5 7-6c0-2.5-1.5-7-7-7z" />
+              </svg>
+              <div class="label">Healthy habits</div>
+            </div>
+            <!-- Books -->
+            <div class="icon-card reveal">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M4 5h10a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3V5z" />
+                <path d="M7 5v11M17 8h3v11" />
+              </svg>
+              <div class="label">Strong academics</div>
+            </div>
+            <!-- Pencil -->
+            <div class="icon-card reveal">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M3 21l3-3h3l9-9a3 3 0 1 0-4.243-4.243l-9 9v3z" />
+              </svg>
+              <div class="label">Creative spirit</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Playful visual -->
+        <div class="card reveal" aria-hidden="true" style="min-height: 240px;">
+          <svg viewBox="0 0 400 260" width="100%" height="100%">
+            <defs>
+              <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#2563eb"/>
+                <stop offset="100%" stop-color="#8338ec"/>
+              </linearGradient>
+              <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#ffd166"/>
+                <stop offset="100%" stop-color="#06d6a0"/>
+              </linearGradient>
+            </defs>
+            <rect x="20" y="20" width="360" height="220" rx="18" fill="url(#g2)" opacity="0.18"/>
+            <circle cx="80" cy="70" r="22" fill="url(#g1)"/>
+            <rect x="120" y="60" width="140" height="16" rx="8" fill="#2563eb" opacity="0.8"/>
+            <rect x="120" y="86" width="90" height="14" rx="7" fill="#ff6b6b" opacity="0.8"/>
+            <rect x="120" y="110" width="110" height="14" rx="7" fill="#06d6a0" opacity="0.8"/>
+            <g transform="translate(80,150)">
+              <rect x="0" y="0" width="46" height="60" rx="6" fill="#fff" stroke="#e5e7eb"/>
+              <rect x="56" y="8" width="46" height="60" rx="6" fill="#fff" stroke="#e5e7eb"/>
+              <rect x="112" y="16" width="46" height="60" rx="6" fill="#fff" stroke="#e5e7eb"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </header>
+  </section>
+
+  <!-- Enroll (K–5) -->
+  <section id="enroll" class="page">
+    <div class="container section reveal">
+      <h2>K–5 Enrollment</h2>
+      <p class="lead">Enroll your child in Creative Christian Learning Center. We focus on foundational skills, joyful learning, and a nurturing environment.</p>
+
+      <div class="cards">
+        <div class="card">
+          <h3>Parent enrollment form</h3>
+          <form id="form-enroll" aria-label="K–5 Parent Enrollment">
+            <div class="form-grid">
+              <div>
+                <label for="enrollName">Parent full name</label>
+                <input id="enrollName" name="parent_name" type="text" placeholder="Jane Doe" required />
+              </div>
+              <div>
+                <label for="enrollEmail">Email</label>
+                <input id="enrollEmail" name="email" type="email" placeholder="name@example.com" required />
+              </div>
+              <div>
+                <label for="enrollPhone">Phone</label>
+                <input id="enrollPhone" name="phone" type="tel" placeholder="(555) 555-5555" required />
+              </div>
+              <div>
+                <label for="childAge">Child age</label>
+                <input id="childAge" name="child_age" type="number" min="4" max="12" placeholder="6" required />
+              </div>
+              <div>
+                <label for="childGrade">Child grade</label>
+                <select id="childGrade" name="child_grade" required>
+                  <option value="">Select grade</option>
+                  <option>K</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+                </select>
+              </div>
+              <div class="full">
+                <label for="notes">Notes (optional)</label>
+                <textarea id="notes" name="notes" rows="3" placeholder="Share any learning preferences or needs..."></textarea>
+              </div>
+            </div>
+            <div style="margin-top: 0.8rem;">
+              <button class="btn btn-primary" type="submit">Submit enrollment</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="card">
+          <h3>Waitlist</h3>
+          <form id="form-waitlist" aria-label="K–5 Waitlist">
+            <div class="form-grid">
+              <div>
+                <label for="wlFirst">First name</label>
+                <input id="wlFirst" name="first_name" type="text" placeholder="First name" required />
+              </div>
+              <div>
+                <label for="wlLast">Last name</label>
+                <input id="wlLast" name="last_name" type="text" placeholder="Last name" required />
+              </div>
+              <div>
+                <label for="wlPhone">Phone</label>
+                <input id="wlPhone" name="phone" type="tel" placeholder="(555) 555-5555" required />
+              </div>
+              <div>
+                <label for="wlEmail">Email</label>
+                <input id="wlEmail" name="email" type="email" placeholder="name@example.com" required />
+              </div>
+              <div>
+                <label for="wlAge">Child age</label>
+                <input id="wlAge" name="child_age" type="number" min="4" max="12" placeholder="7" required />
+              </div>
+              <div>
+                <label for="wlStart">Anticipated start date</label>
+                <input id="wlStart" name="start_date" type="date" required />
+              </div>
+            </div>
+            <div style="margin-top: 0.8rem;">
+              <button class="btn btn-primary" type="submit">Join waitlist</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="card">
+          <h3>Why families choose us</h3>
+          <ul>
+            <li><strong>Faith-centered:</strong> Character and community, cultivated daily.</li>
+            <li><strong>Foundational skills:</strong> Reading, math, and curiosity-first learning.</li>
+            <li><strong>Warm environment:</strong> Professional, playful, and welcoming to all.</li>
+          </ul>
+        </div>
+      </div>
     </div>
-  </div>
+  </section>
+
+  <!-- Scholarships -->
+  <section id="scholarships" class="page">
+    <div class="container section reveal">
+      <h2>Scholarships for K–5</h2>
+      <p class="lead">Many families qualify for tuition support. Explore Step Up For Students options including UA and PEP Scholarship programs for eligible students.</p>
+
+      <div class="scholar-cta">
+        <div>
+          <h3>Step Up For Students</h3>
+          <p>Learn about Florida scholarship pathways and how to apply. K–5 families can find programs designed to support early learning and literacy.</p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="https://www.stepupforstudents.org/scholarships/" target="_blank" rel="noopener">Go to Step Up For Students</a>
+            <a class="btn" href="#enroll">Continue enrollment</a>
+          </div>
+        </div>
+        <div class="card">
+          <h4 style="margin-top:0;">Quick tips</h4>
+          <ul>
+            <li><strong>UA Scholarship:</strong> Supports students with unique abilities.</li>
+            <li><strong>PEP Scholarship:</strong> Personalized education program through an ESA.</li>
+            <li><strong>Docs ready:</strong> Have ID, residency, and prior school info handy.</li>
+          </ul>
+          <p style="color: var(--muted); font-size: 0.9rem;">Program availability and details can change; always review the official Step Up page before applying.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Middle School -->
+  <section id="middle" class="page">
+    <div class="container section reveal">
+      <div class="badge">Grades 6–8 • Open Enrollment</div>
+      <h2>Self-study: Leadership development and investing strategies</h2>
+      <p class="lead">A self-paced program focused on leadership mindsets, decision-making, financial literacy, and beginner-friendly investing concepts—guided with projects and reflection.</p>
+
+      <div class="cards">
+        <div class="card">
+          <h3>Enroll in the 6–8 program</h3>
+          <form id="form-middle" aria-label="Middle School Enrollment">
+            <div class="form-grid">
+              <div>
+                <label for="msName">Student name</label>
+                <input id="msName" name="student_name" type="text" placeholder="Student full name" required />
+              </div>
+              <div>
+                <label for="msEmail">Parent email</label>
+                <input id="msEmail" name="email" type="email" placeholder="parent@example.com" required />
+              </div>
+              <div>
+                <label for="msPhone">Parent phone</label>
+                <input id="msPhone" name="phone" type="tel" placeholder="(555) 555-5555" required />
+              </div>
+              <div>
+                <label for="msGrade">Grade</label>
+                <select id="msGrade" name="grade" required>
+                  <option value="">Select grade</option>
+                  <option>6</option><option>7</option><option>8</option>
+                </select>
+              </div>
+              <div class="full">
+                <label for="msInterest">Goals (optional)</label>
+                <textarea id="msInterest" name="goals" rows="3" placeholder="Tell us what you hope to learn and build..."></textarea>
+              </div>
+            </div>
+            <div style="margin-top: 0.8rem;">
+              <button class="btn btn-primary" type="submit">Enroll in self-study</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="card">
+          <h3>What students explore</h3>
+          <ul>
+            <li><strong>Leadership:</strong> Values, vision, and practical teamwork.</li>
+            <li><strong>Investing basics:</strong> Risk, compounding, and simple portfolios.</li>
+            <li><strong>Projects:</strong> Challenges, reflections, and community impact ideas.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>How it works</h3>
+          <ul>
+            <li><strong>Self-paced:</strong> Flexible weekly time.</li>
+            <li><strong>Guides:</strong> Clear prompts and checklists.</li>
+            <li><strong>Support:</strong> Parent and mentor touchpoints.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about" class="page">
+    <div class="container section reveal">
+      <h2>About Mrs. Tiphany Richardson</h2>
+      <p class="lead">Tiphany Richardson is a wife, mother, entrepreneur, and a early childhood educator; who aspires to make a positive impact in the profession of early childhood education, Mrs. Richardson leads Creative Christian Preschool & Learning Center, INC. with a heart for faith-driven education, joyful rigor, and nurturing every child’s potential .</p>
+
+      <div class="cards">
+        <div class="card">
+          <h3>Our mission</h3>
+          <p>To partner with families in building character, curiosity, and academic confidence—preparing children to serve, lead, and thrive.</p>
+        </div>
+        <div class="card">
+          <h3>Our approach</h3>
+          <p>Professional standards with playful energy: structured foundations in reading and math, hands-on projects, and warm community.</p>
+        </div>
+        <div class="card">
+          <h3>Contact</h3>
+          <p>Email us anytime with questions about enrollment, scholarships, or programs. We’re honored to serve your family.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="container">
+    <div style="display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap;">
+      <p>© <span id="year"></span> Creative Christian Learning Center. All rights reserved.</p>
+      <div style="display:flex; gap:0.6rem;">
+        <a class="btn" href="#home">Home</a>
+        <a class="btn" href="#enroll">Enroll</a>
+        <a class="btn" href="#scholarships">Scholarships</a>
+        <a class="btn" href="#middle">Middle School</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Pencil toggle: switch between playful colors and minimal monochrome
+    const bodyEl = document.body;
+    const toggle = document.getElementById('pencilToggle');
+    function setTheme(playful) {
+      bodyEl.classList.toggle('theme-playful', playful);
+      bodyEl.classList.toggle('theme-minimal', !playful);
+      toggle.setAttribute('aria-pressed', playful ? 'true' : 'false');
+      toggle.querySelector('.label').textContent = playful ? 'Color pops' : 'Minimal';
+    }
+    let playful = true;
+    setTheme(playful);
+    function toggleTheme() { playful = !playful; setTheme(playful); }
+    toggle.addEventListener('click', toggleTheme);
+    toggle.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleTheme(); } });
+
+    // Scroll reveal animations
+    const reveals = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('show');
+      });
+    }, { threshold: 0.15 });
+    reveals.forEach(el => io.observe(el));
+
+    // Basic form handlers (prevent page reload; demo only)
+    function attachForm(id, msg) {
+      const form = document.getElementById(id);
+      if (!form) return;
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        alert(msg + '\nWe will contact you shortly.'); // replace with real submission
+        form.reset();
+      });
+    }
+    attachForm('form-enroll', 'Enrollment submitted!');
+    attachForm('form-waitlist', 'Waitlist joined!');
+    attachForm('form-middle', 'Middle School enrollment submitted!');
+  </script>
 
   <!-- Pencil Button -->
   <button id="pencilBtn">✏️</button>
